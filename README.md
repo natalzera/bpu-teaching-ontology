@@ -80,7 +80,7 @@ Open `docs/index.html` locally in a browser. It is a lightweight HTML reference 
 
 ## Repository, versioning, and licence
 
-- Project repository: `[https://github.com/<YOUR_GITHUB_USERNAME>/bpu-teaching-ontology](https://github.com/natalzera/bpu-teaching-ontology)`;
+- Project repository: `https://github.com/natalzera/bpu-teaching-ontology`;
 - Ontology version: `0.1.0`; the ontology IRI is currently `https://example.org/bpu` and version IRI `https://example.org/bpu/0.1.0`;
 - Project licence: [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/), as declared in the ontology metadata. Keep the attribution and source-vocabulary licence notes in `requirements.md`.
 - Suggested release process: commit source files, tag `v0.1.0`, and attach this ZIP to the release. Increment the patch version for corrections that do not change the model's intended meaning; increment minor/major versions for compatible/incompatible modelling changes.
