@@ -80,11 +80,7 @@ Open `docs/index.html` locally in a browser. It is a lightweight HTML reference 
 
 ## Repository, versioning, and licence
 
-- Suggested repository: `https://github.com/<YOUR_GITHUB_USERNAME>/bpu-teaching-ontology` — replace this placeholder with the actual public repository URL (or give the teaching staff access if private).
-- Ontology version: `0.1.0`; the ontology IRI is currently `https://example.org/bpu` and version IRI `https://example.org/bpu/0.1.0`. **Replace the `example.org` placeholder with a stable IRI you control before release**, and update references consistently.
+- Project repository: `[https://github.com/<YOUR_GITHUB_USERNAME>/bpu-teaching-ontology](https://github.com/natalzera/bpu-teaching-ontology)`;
+- Ontology version: `0.1.0`; the ontology IRI is currently `https://example.org/bpu` and version IRI `https://example.org/bpu/0.1.0`;
 - Project licence: [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/), as declared in the ontology metadata. Keep the attribution and source-vocabulary licence notes in `requirements.md`.
 - Suggested release process: commit source files, tag `v0.1.0`, and attach this ZIP to the release. Increment the patch version for corrections that do not change the model's intended meaning; increment minor/major versions for compatible/incompatible modelling changes.
-
-## Current submission caveats
-
-The archive is self-contained for review, but two release tasks still require your action: (1) replace the example.org ontology IRIs and the GitHub URL placeholder; (2) run OOPS! and include its real report/screenshots. The profile-validation log also records an OWL 2 DL profile warning around `xsd:date` datatype restrictions; review that warning before claiming strict OWL 2 DL profile compliance.
