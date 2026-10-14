@@ -1,0 +1,26 @@
+# CQ8: Which lecturers (lead or co-lecturer role) teach at a state university
+#      in term 2026/1?
+# Reasoning: not required (USP is asserted as StateUniversity).
+# Relies on StateUniversity being disjoint from FederalUniversity (see CQ6).
+PREFIX bpu:     <https://example.org/bpu#>
+PREFIX foaf:    <http://xmlns.com/foaf/0.1/>
+PREFIX org:     <http://www.w3.org/ns/org#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?personName
+WHERE {
+  ?university a bpu:StateUniversity .
+  ?department org:subOrganizationOf+ ?university .
+  ?course bpu:responsibleUnit ?department .
+  ?offering bpu:ofCourse ?course ;
+            bpu:heldInTerm ?term .
+  ?term bpu:termCode "2026/1" .
+  ?assignment bpu:assignedOffering ?offering ;
+              bpu:assignedPerson   ?person ;
+              bpu:assignmentRole   ?role .
+  VALUES ?role { bpu:lead-lecturer-role bpu:co-lecturer-role }
+  ?person foaf:name ?personName .
+}
+ORDER BY ?personName

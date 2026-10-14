@@ -1,0 +1,22 @@
+# CQ11: Which persons are teaching assistants in term 2026/1, and for which offerings?
+# Reasoning: not required.
+PREFIX bpu:     <https://example.org/bpu#>
+PREFIX foaf:    <http://xmlns.com/foaf/0.1/>
+PREFIX org:     <http://www.w3.org/ns/org#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?personName ?title ?code
+WHERE {
+  ?assignment bpu:assignmentRole   bpu:teaching-assistant-role ;
+              bpu:assignedPerson   ?person ;
+              bpu:assignedOffering ?offering .
+  ?offering bpu:ofCourse ?course ;
+            bpu:heldInTerm ?term .
+  ?term bpu:termCode "2026/1" .
+  ?course dcterms:title ?title ;
+          bpu:courseCode ?code .
+  ?person foaf:name ?personName .
+}
+ORDER BY ?personName

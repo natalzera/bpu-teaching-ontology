@@ -1,0 +1,20 @@
+== control A: neg-disjoint WITHOUT the disjointness axiom
+reasoner exit status (grep) = 1 ; 1 means no 'inconsistent' line was printed
+uni-misrecorded types without disjointness: ['FederalUniversity', 'StateUniversity', 'University']
+ifsp-synthetic types after domain inference: ['FederalUniversity', 'FormalOrganization', 'Organization', 'University']
+== control B: ELK cross-check on ontology+fixtures
+cq01: P
+cq02: P
+cq03: P
+cq04: P
+cq05: P
+cq06: P
+cq07: P
+cq08: P
+cq09: P
+cq10: P
+cq11: P
+== versions
+ROBOT version 1.9.11
+openjdk version "21.0.10" 2026-01-20
+rdflib 7.6.0

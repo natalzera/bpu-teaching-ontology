@@ -1,0 +1,23 @@
+# CQ3: Which universities offer a course titled "Databases" in term 2026/1?
+# Reasoning: REQUIRED for the UFMG row (FederalUniversity subClassOf University).
+# Uses a property path over org:subOrganizationOf.
+PREFIX bpu:     <https://example.org/bpu#>
+PREFIX foaf:    <http://xmlns.com/foaf/0.1/>
+PREFIX org:     <http://www.w3.org/ns/org#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?universityName
+WHERE {
+  ?offering a bpu:CourseOffering ;
+            bpu:heldInTerm ?term ;
+            bpu:ofCourse   ?course .
+  ?term   bpu:termCode "2026/1" .
+  ?course dcterms:title "Databases" ;
+          bpu:responsibleUnit ?department .
+  ?department org:subOrganizationOf+ ?university .
+  ?university a bpu:University ;
+              foaf:name ?universityName .
+}
+ORDER BY ?universityName

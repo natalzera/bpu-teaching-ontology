@@ -1,0 +1,17 @@
+# CQ7: In which terms has course COMP-OE been offered?
+# Reasoning: not required.
+PREFIX bpu:     <https://example.org/bpu#>
+PREFIX foaf:    <http://xmlns.com/foaf/0.1/>
+PREFIX org:     <http://www.w3.org/ns/org#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?termCode
+WHERE {
+  ?course bpu:courseCode "COMP-OE" .
+  ?offering bpu:ofCourse ?course ;
+            bpu:heldInTerm ?term .
+  ?term bpu:termCode ?termCode .
+}
+ORDER BY ?termCode

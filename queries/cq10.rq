@@ -1,0 +1,18 @@
+# CQ10: Which academic terms include the date 2026-10-13?
+# Reasoning: not required.
+PREFIX bpu:     <https://example.org/bpu#>
+PREFIX foaf:    <http://xmlns.com/foaf/0.1/>
+PREFIX org:     <http://www.w3.org/ns/org#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?termCode
+WHERE {
+  ?term a bpu:AcademicTerm ;
+        bpu:termCode ?termCode ;
+        bpu:startDate ?start ;
+        bpu:endDate   ?end .
+  FILTER ("2026-10-13"^^xsd:date >= ?start && "2026-10-13"^^xsd:date <= ?end)
+}
+ORDER BY ?termCode

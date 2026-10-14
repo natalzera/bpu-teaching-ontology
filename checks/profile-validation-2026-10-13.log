@@ -1,0 +1,12 @@
+=== validate-profile DL (ontology + fixtures) ===
+OWL 2 DL Profile Report: Ontology and imports closure NOT in profile. The following violations are present:
+Use of defined datatype in datatype restriction "2026-03-02"^^xsd:date [DataPropertyAssertion(<https://example.org/bpu#startDate> <https://example.org/bpu#term-2026-1> "2026-03-02"^^xsd:date) in OntologyID(OntologyIRI(<https://example.org/bpu>) VersionIRI(<https://example.org/bpu/0.1.0>))]
+Use of defined datatype in datatype restriction "2026-07-11"^^xsd:date [DataPropertyAssertion(<https://example.org/bpu#endDate> <https://example.org/bpu#term-2026-1> "2026-07-11"^^xsd:date) in OntologyID(OntologyIRI(<https://example.org/bpu>) VersionIRI(<https://example.org/bpu/0.1.0>))]
+Use of defined datatype in datatype restriction "2026-08-03"^^xsd:date [DataPropertyAssertion(<https://example.org/bpu#startDate> <https://example.org/bpu#term-2026-2> "2026-08-03"^^xsd:date) in OntologyID(OntologyIRI(<https://example.org/bpu>) VersionIRI(<https://example.org/bpu/0.1.0>))]
+Use of defined datatype in datatype restriction "2026-12-12"^^xsd:date [DataPropertyAssertion(<https://example.org/bpu#endDate> <https://example.org/bpu#term-2026-2> "2026-12-12"^^xsd:date) in OntologyID(OntologyIRI(<https://example.org/bpu>) VersionIRI(<https://example.org/bpu/0.1.0>))]
+
+PROFILE VIOLATION ERROR https://example.org/bpu violates profile DL
+For details see: http://robot.obolibrary.org/validate-profile#profile-violation-error
+Use the -vvv option to show the stack trace.
+Use the --help option to see usage information.
+/bin/sh: 5: Bad substitution

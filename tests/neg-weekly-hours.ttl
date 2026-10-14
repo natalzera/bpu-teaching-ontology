@@ -1,0 +1,12 @@
+@prefix bpu:  <https://example.org/bpu#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+# EXPECTED: ontology.ttl + fixtures.ttl + this file is INCONSISTENT.
+# 99 weekly hours lies outside the facet-restricted range (1 to 40) of
+# bpu:weeklyHours. Datatype ranges, unlike object property domains, make a
+# reasoner report an inconsistency.
+bpu:asg-bad-hours a bpu:TeachingAssignment ;
+    bpu:assignedPerson bpu:ana ;
+    bpu:assignedOffering bpu:off-ufscar-comp-oe-2026-1 ;
+    bpu:assignmentRole bpu:co-lecturer-role ;
+    bpu:weeklyHours 99 .

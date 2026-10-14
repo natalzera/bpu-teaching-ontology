@@ -1,0 +1,24 @@
+# CQ1: Which course offerings does Ana Silva teach in term 2026/1,
+#      with course code and weekly hours?
+# Reasoning: not required.
+PREFIX bpu:     <https://example.org/bpu#>
+PREFIX foaf:    <http://xmlns.com/foaf/0.1/>
+PREFIX org:     <http://www.w3.org/ns/org#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?title ?code ?weeklyHours
+WHERE {
+  ?person foaf:name "Ana Silva" .
+  ?assignment a bpu:TeachingAssignment ;
+              bpu:assignedPerson   ?person ;
+              bpu:assignedOffering ?offering ;
+              bpu:weeklyHours      ?weeklyHours .
+  ?offering bpu:heldInTerm ?term ;
+            bpu:ofCourse   ?course .
+  ?term   bpu:termCode "2026/1" .
+  ?course dcterms:title ?title ;
+          bpu:courseCode ?code .
+}
+ORDER BY ?title

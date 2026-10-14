@@ -1,0 +1,12 @@
+@prefix bpu:  <https://example.org/bpu#> .
+@prefix org:  <http://www.w3.org/ns/org#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+# EXPECTED: ontology.ttl + this file is CONSISTENT, but the reasoner draws a
+# wrong conclusion. A Federal Institute (Instituto Federal) is a federal public
+# institution that is NOT a university. It is typed only as an organisation.
+# Because the domain of bpu:maintainedBy is bpu:University, the reasoner infers
+# that it IS a University, and then a FederalUniversity.
+bpu:ifsp-synthetic a org:FormalOrganization ;
+    foaf:name "Instituto Federal (synthetic example, not a university)" ;
+    bpu:maintainedBy bpu:uniao-federal .

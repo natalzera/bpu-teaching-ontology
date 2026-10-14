@@ -1,0 +1,312 @@
+@prefix bpu:     <https://example.org/bpu#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix org:     <http://www.w3.org/ns/org#> .
+@prefix schema:  <https://schema.org/> .
+
+###############################################################################
+# Ontology header: stable ontology IRI + version IRI
+###############################################################################
+
+<https://example.org/bpu>
+    a owl:Ontology ;
+    owl:versionIRI <https://example.org/bpu/0.1.0> ;
+    owl:versionInfo "0.1.0" ;
+    rdfs:label "BPU-Teaching: Brazilian Public University Teaching Ontology"@en ;
+    rdfs:label "BPU-Teaching: Ontologia de Ensino das Universidades Públicas Brasileiras"@pt-BR ;
+    dcterms:description "An ontology of course offerings and teaching assignments at Brazilian federal and state universities. It reuses FOAF, W3C ORG and Dublin Core Terms, and models teaching participation as a reified assignment (n-ary relation / role pattern)."@en ;
+    dcterms:creator "BPU-Teaching authors" ;
+    dcterms:created "2026-10-13"^^xsd:date ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    skos:scopeNote "Scope: federal and state universities, departments, courses, course offerings per academic term, and teaching assignments (role and weekly hours). Out of scope: students, grades, timetables, curricula, contracts. See requirements.md."@en .
+
+###############################################################################
+# Annotation properties used (reused IRIs)
+###############################################################################
+
+skos:definition   a owl:AnnotationProperty .
+skos:scopeNote    a owl:AnnotationProperty .
+skos:closeMatch   a owl:AnnotationProperty .
+dcterms:description a owl:AnnotationProperty .
+dcterms:creator   a owl:AnnotationProperty .
+dcterms:created   a owl:AnnotationProperty .
+dcterms:license   a owl:AnnotationProperty .
+
+###############################################################################
+# Reused external terms: minimal extract (MIREOT style), IRIs unchanged.
+# Only the axioms this ontology depends on are copied; they follow the sources:
+#   FOAF  http://xmlns.com/foaf/0.1/      (spec 0.99, 2014-01-14)
+#   ORG   http://www.w3.org/ns/org#       (W3C Rec 2014-01-16, vocabulary v0.8)
+#   SKOS  http://www.w3.org/2004/02/skos/core#
+#   DCT   http://purl.org/dc/terms/
+# See requirements.md, Section 2.1 for the reuse decisions.
+###############################################################################
+
+foaf:Agent  a owl:Class ;
+    rdfs:label "Agent"@en ;
+    rdfs:isDefinedBy <http://xmlns.com/foaf/0.1/> .
+
+foaf:Person a owl:Class ;
+    rdfs:subClassOf foaf:Agent ;
+    rdfs:label "Person"@en ;
+    rdfs:isDefinedBy <http://xmlns.com/foaf/0.1/> .
+
+foaf:name   a owl:DatatypeProperty ;
+    rdfs:label "name"@en ;
+    rdfs:isDefinedBy <http://xmlns.com/foaf/0.1/> .
+
+skos:Concept a owl:Class ;
+    rdfs:label "Concept"@en ;
+    rdfs:isDefinedBy <http://www.w3.org/2004/02/skos/core#> .
+
+org:Organization a owl:Class ;
+    rdfs:subClassOf foaf:Agent ;
+    owl:disjointWith org:Role ;
+    rdfs:label "Organization"@en ;
+    rdfs:isDefinedBy <http://www.w3.org/ns/org#> .
+
+org:FormalOrganization a owl:Class ;
+    rdfs:subClassOf org:Organization ;
+    rdfs:label "Formal Organization"@en ;
+    rdfs:isDefinedBy <http://www.w3.org/ns/org#> .
+
+org:OrganizationalUnit a owl:Class ;
+    rdfs:subClassOf org:Organization ;
+    rdfs:label "OrganizationalUnit"@en ;
+    rdfs:isDefinedBy <http://www.w3.org/ns/org#> .
+
+org:Role a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
+    rdfs:label "Role"@en ;
+    rdfs:isDefinedBy <http://www.w3.org/ns/org#> .
+
+org:transitiveSubOrganizationOf a owl:ObjectProperty, owl:TransitiveProperty ;
+    rdfs:domain org:Organization ;
+    rdfs:range  org:Organization ;
+    rdfs:label "transitive sub-organization"@en ;
+    rdfs:isDefinedBy <http://www.w3.org/ns/org#> .
+
+org:subOrganizationOf a owl:ObjectProperty ;
+    rdfs:subPropertyOf org:transitiveSubOrganizationOf ;
+    rdfs:domain org:Organization ;
+    rdfs:range  org:Organization ;
+    rdfs:label "subOrganization of"@en ;
+    rdfs:isDefinedBy <http://www.w3.org/ns/org#> .
+
+dcterms:title a owl:DatatypeProperty ;
+    rdfs:label "Title"@en ;
+    rdfs:isDefinedBy <http://purl.org/dc/terms/> .
+
+###############################################################################
+# Classes
+###############################################################################
+
+bpu:University a owl:Class ;
+    rdfs:subClassOf org:FormalOrganization ;
+    rdfs:label "University"@en , "Universidade"@pt-BR ;
+    skos:definition "A public higher-education institution with legal personality, maintained by a government body."@en ;
+    skos:closeMatch schema:CollegeOrUniversity ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+bpu:FederalUniversity a owl:Class ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (
+            bpu:University
+            [ a owl:Restriction ;
+              owl:onProperty bpu:maintainedBy ;
+              owl:hasValue   bpu:uniao-federal ]
+        )
+    ] ;
+    # Disjointness with StateUniversity is stated below.
+    rdfs:label "Federal University"@en , "Universidade Federal"@pt-BR ;
+    skos:definition "A defined class: any university maintained by the Federal Government (bpu:uniao-federal). A reasoner classifies a university into this class without an asserted type."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+bpu:StateUniversity a owl:Class ;
+    rdfs:subClassOf bpu:University ;
+    rdfs:label "State University"@en , "Universidade Estadual"@pt-BR ;
+    skos:definition "A university maintained by a state government."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+# Justified disjointness: in Brazil a public university is maintained either by the
+# Union or by a state, and the data model records exactly one maintaining sphere.
+# A university classified as both indicates a data error (see tests/neg-disjoint.ttl).
+
+bpu:Department a owl:Class ;
+    rdfs:subClassOf org:OrganizationalUnit ;
+    rdfs:label "Department"@en , "Departamento"@pt-BR ;
+    skos:definition "An academic unit that is part of a university and is responsible for courses."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+bpu:Course a owl:Class ;
+    rdfs:label "Course"@en , "Disciplina"@pt-BR ;
+    skos:definition "A catalogue entry for a course (title, code), independent of when it is offered."@en ;
+    skos:closeMatch schema:Course ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+bpu:CourseOffering a owl:Class ;
+    rdfs:label "Course Offering"@en , "Oferta de Disciplina"@pt-BR ;
+    skos:definition "A course offered in one academic term. A different thing from the Course it instantiates."@en ;
+    skos:closeMatch schema:CourseInstance ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+bpu:AcademicTerm a owl:Class ;
+    rdfs:label "Academic Term"@en , "Período Letivo"@pt-BR ;
+    skos:definition "A university semester, identified by a code such as 2026/1 and bounded by a start and an end date."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+bpu:TeachingAssignment a owl:Class ;
+    rdfs:label "Teaching Assignment"@en , "Atribuição de Ensino"@pt-BR ;
+    skos:definition "A reified relationship that links one person to one course offering in one teaching role, with weekly hours. It implements the participation (role) pattern."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+bpu:TeachingRole a owl:Class ;
+    rdfs:subClassOf org:Role ;
+    rdfs:label "Teaching Role"@en , "Papel de Ensino"@pt-BR ;
+    skos:definition "A kind of role a person can play in a teaching assignment, such as lead lecturer."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+bpu:GovernmentBody a owl:Class ;
+    rdfs:subClassOf org:FormalOrganization ;
+    rdfs:label "Government Body"@en , "Ente Governamental"@pt-BR ;
+    skos:definition "A government (the Union or a state) that maintains public universities."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+# The main kinds of thing in the model do not overlap.
+[] a owl:AllDisjointClasses ;
+    owl:members (
+        bpu:University bpu:Department bpu:GovernmentBody
+        bpu:Course bpu:CourseOffering bpu:AcademicTerm
+        bpu:TeachingAssignment bpu:TeachingRole
+    ) .
+
+###############################################################################
+# Object properties
+###############################################################################
+
+bpu:maintainedBy a owl:ObjectProperty ;
+    rdfs:domain bpu:University ;
+    rdfs:range  bpu:GovernmentBody ;
+    rdfs:label "maintained by"@en , "mantida por"@pt-BR ;
+    skos:definition "Links a university to the government body that maintains it."@en ;
+    skos:scopeNote "The domain is an inference rule, not a data-entry check: asserting maintainedBy on any resource makes a reasoner infer that it is a University (see evidence.md, Section 2.3)."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+bpu:responsibleUnit a owl:ObjectProperty ;
+    rdfs:domain bpu:Course ;
+    rdfs:range  bpu:Department ;
+    rdfs:label "responsible unit"@en , "unidade responsável"@pt-BR ;
+    skos:definition "Links a course to the department responsible for it."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+bpu:ofCourse a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:domain bpu:CourseOffering ;
+    rdfs:range  bpu:Course ;
+    rdfs:label "of course"@en , "da disciplina"@pt-BR ;
+    skos:definition "Links a course offering to the course it is an offering of. Each offering has exactly one course."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+bpu:heldInTerm a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:domain bpu:CourseOffering ;
+    rdfs:range  bpu:AcademicTerm ;
+    rdfs:label "held in term"@en , "realizada no período"@pt-BR ;
+    skos:definition "Links a course offering to the academic term in which it is held."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+bpu:assignedPerson a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:domain bpu:TeachingAssignment ;
+    rdfs:range  foaf:Person ;
+    rdfs:label "assigned person"@en , "pessoa atribuída"@pt-BR ;
+    skos:definition "Links a teaching assignment to the person who participates in it."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+bpu:assignedOffering a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:domain bpu:TeachingAssignment ;
+    rdfs:range  bpu:CourseOffering ;
+    rdfs:label "assigned offering"@en , "oferta atribuída"@pt-BR ;
+    skos:definition "Links a teaching assignment to the course offering it concerns."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+bpu:assignmentRole a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:domain bpu:TeachingAssignment ;
+    rdfs:range  bpu:TeachingRole ;
+    rdfs:label "assignment role"@en , "papel na atribuição"@pt-BR ;
+    skos:definition "Links a teaching assignment to the role the person plays in it."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+###############################################################################
+# Datatype properties
+###############################################################################
+
+bpu:courseCode a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:domain bpu:Course ;
+    rdfs:range  xsd:string ;
+    rdfs:label "course code"@en , "código da disciplina"@pt-BR ;
+    skos:definition "The code that identifies a course in its university's catalogue, for example COMP-DB."@en ;
+    skos:closeMatch schema:courseCode ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+bpu:termCode a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:domain bpu:AcademicTerm ;
+    rdfs:range  xsd:string ;
+    rdfs:label "term code"@en , "código do período"@pt-BR ;
+    skos:definition "The code of an academic term in the form year/semester, for example 2026/1."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+bpu:startDate a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:domain bpu:AcademicTerm ;
+    rdfs:range  xsd:date ;
+    rdfs:label "start date"@en , "data de início"@pt-BR ;
+    skos:definition "The first day of an academic term."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+bpu:endDate a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:domain bpu:AcademicTerm ;
+    rdfs:range  xsd:date ;
+    rdfs:label "end date"@en , "data de término"@pt-BR ;
+    skos:definition "The last day of an academic term."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+# Property constraint with a datatype facet: 1 to 40 hours per week.
+bpu:weeklyHours a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:domain bpu:TeachingAssignment ;
+    rdfs:range [
+        a rdfs:Datatype ;
+        owl:onDatatype xsd:integer ;
+        owl:withRestrictions ( [ xsd:minInclusive 1 ] [ xsd:maxInclusive 40 ] )
+    ] ;
+    rdfs:label "weekly hours"@en , "horas semanais"@pt-BR ;
+    skos:definition "The number of teaching hours per week in an assignment, a whole number from 1 to 40."@en ;
+    rdfs:isDefinedBy <https://example.org/bpu> .
+
+###############################################################################
+# Individuals that are part of the schema (controlled vocabulary)
+###############################################################################
+
+bpu:uniao-federal a bpu:GovernmentBody , owl:NamedIndividual ;
+    foaf:name "União Federal" ;
+    rdfs:label "Federal Government (Union)"@en , "União"@pt-BR ;
+    skos:definition "The Federal Government of Brazil, which maintains the federal universities."@en .
+
+bpu:lead-lecturer-role a bpu:TeachingRole , owl:NamedIndividual ;
+    rdfs:label "Lead lecturer"@en , "Docente responsável"@pt-BR ;
+    skos:definition "The lecturer who is in charge of a course offering."@en .
+
+bpu:co-lecturer-role a bpu:TeachingRole , owl:NamedIndividual ;
+    rdfs:label "Co-lecturer"@en , "Docente colaborador"@pt-BR ;
+    skos:definition "A lecturer who shares the teaching of a course offering with the lead lecturer."@en .
+
+bpu:teaching-assistant-role a bpu:TeachingRole , owl:NamedIndividual ;
+    rdfs:label "Teaching assistant"@en , "Monitor"@pt-BR ;
+    skos:definition "A person who assists with a course offering without being a lecturer."@en .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers (
+        bpu:lead-lecturer-role bpu:co-lecturer-role bpu:teaching-assistant-role
+    ) .

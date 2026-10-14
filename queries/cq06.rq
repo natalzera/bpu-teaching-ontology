@@ -1,0 +1,27 @@
+# CQ6: Total weekly teaching hours per lecturer (lead or co-lecturer role)
+#      at federal universities in term 2026/1.
+# Reasoning: REQUIRED. UFSCar is federal only by inference (defined class).
+PREFIX bpu:     <https://example.org/bpu#>
+PREFIX foaf:    <http://xmlns.com/foaf/0.1/>
+PREFIX org:     <http://www.w3.org/ns/org#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?personName (SUM(?hours) AS ?totalHours)
+WHERE {
+  ?university a bpu:FederalUniversity .
+  ?department org:subOrganizationOf+ ?university .
+  ?course bpu:responsibleUnit ?department .
+  ?offering bpu:ofCourse ?course ;
+            bpu:heldInTerm ?term .
+  ?term bpu:termCode "2026/1" .
+  ?assignment bpu:assignedOffering ?offering ;
+              bpu:assignedPerson   ?person ;
+              bpu:assignmentRole   ?role ;
+              bpu:weeklyHours      ?hours .
+  VALUES ?role { bpu:lead-lecturer-role bpu:co-lecturer-role }
+  ?person foaf:name ?personName .
+}
+GROUP BY ?person ?personName
+ORDER BY ?personName

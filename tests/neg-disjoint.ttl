@@ -1,0 +1,10 @@
+@prefix bpu:  <https://example.org/bpu#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+# EXPECTED: ontology.ttl + this file is INCONSISTENT.
+# A university is asserted as a StateUniversity but is maintained by the Union.
+# The defined class classifies it as FederalUniversity, which is disjoint with
+# StateUniversity.
+bpu:uni-misrecorded a bpu:StateUniversity ;
+    foaf:name "Universidade Registrada Com Erro (synthetic)" ;
+    bpu:maintainedBy bpu:uniao-federal .

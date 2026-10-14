@@ -1,0 +1,25 @@
+# CQ9: Which offerings in term 2026/1 have more than one lecturer assigned
+#      (lead or co-lecturer role)?
+# Reasoning: not required. Counts recorded assignments only (open world).
+PREFIX bpu:     <https://example.org/bpu#>
+PREFIX foaf:    <http://xmlns.com/foaf/0.1/>
+PREFIX org:     <http://www.w3.org/ns/org#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?title ?code (COUNT(DISTINCT ?person) AS ?lecturers)
+WHERE {
+  ?offering bpu:ofCourse ?course ;
+            bpu:heldInTerm ?term .
+  ?term bpu:termCode "2026/1" .
+  ?course dcterms:title ?title ;
+          bpu:courseCode ?code .
+  ?assignment bpu:assignedOffering ?offering ;
+              bpu:assignedPerson   ?person ;
+              bpu:assignmentRole   ?role .
+  VALUES ?role { bpu:lead-lecturer-role bpu:co-lecturer-role }
+}
+GROUP BY ?offering ?title ?code
+HAVING (COUNT(DISTINCT ?person) > 1)
+ORDER BY ?title

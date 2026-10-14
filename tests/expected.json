@@ -1,0 +1,18 @@
+{
+  "cq01": [["Databases", "COMP-DB", 4], ["Ontology Engineering", "COMP-OE", 4]],
+  "cq02": [["Universidade Federal de Minas Gerais"], ["Universidade Federal de São Carlos"]],
+  "cq03": [["Universidade Federal de Minas Gerais"], ["Universidade Federal de São Carlos"]],
+  "cq04": [
+    ["Departamento de Ciência da Computação", "Universidade Federal de Minas Gerais", 1],
+    ["Departamento de Ciências de Computação", "Universidade de São Paulo", 1],
+    ["Departamento de Computação", "Universidade Federal de São Carlos", 2],
+    ["Departamento de Matemática", "Universidade Federal de São Carlos", 1]
+  ],
+  "cq05": [["Ana Silva", "Lead lecturer"], ["Bruno Costa", "Co-lecturer"]],
+  "cq06": [["Ana Silva", 8], ["Bruno Costa", 6], ["Carla Souza", 4]],
+  "cq07": [["2026/1"], ["2026/2"]],
+  "cq08": [["Diego Lima"]],
+  "cq09": [["Databases", "COMP-DB", 2]],
+  "cq10": [["2026/2"]],
+  "cq11": [["Eva Rocha", "Ontology Engineering", "COMP-OE"]]
+}
